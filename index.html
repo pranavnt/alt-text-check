@@ -9,7 +9,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     function checkImg() {
-      document.getElementById("loadingParagraph").innerHTML = "loading...";
+      document.getElementById("loadingParagraph").innerHTML = "loading";
       var url = document.getElementById("urlInput").value;
       $(document).ready(function () {
         $("button").click(function () {
@@ -23,17 +23,21 @@
                 el.innerHTML = str;
                 el = el.getElementsByTagName("img");
                 console.log(el);
-                var bool = true;
                 for (let item of el) {
+                  document.getElementById("loadingParagraph").innerHTML =
+                    "scanned";
                   if (item.alt == null || item.alt == "") {
-                    document.write(
+                    var message =
                       "The image with the source: " +
-                        item.src +
-                        " has no alt text :(. Please go back to your code, and add alt text to make your website more accessible"
-                    );
-                    bool = false;
+                      item.src +
+                      " has no alt text :(. Please go back to your code, and add alt text to make your website more accessible";
+                    var btn = document.createElement("p");
+                    btn.innerHTML = message;
+                    document.body.appendChild(btn);
                   }
                 }
+              } else {
+                console.log(404);
               }
             }
           );
@@ -45,7 +49,6 @@
     <label>Enter URL:</label>
     <input type="text" id="urlInput" />
     <button onclick="checkImg()">Submit</button>
-    <br />
     <p id="loadingParagraph"></p>
   </body>
 </html>
