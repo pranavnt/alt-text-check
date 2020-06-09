@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    function checkImg() {
+      document.getElementById("loadingParagraph").innerHTML = "loading...";
+      var url = document.getElementById("urlInput").value;
+      $(document).ready(function () {
+        $("button").click(function () {
+          $.get(
+            "https://api.scraperapi.com?api_key=e20faa837d473dedf9b6406a843b87ef&url=" +
+              url,
+            function (data, status) {
+              if (status != 404) {
+                var str = String(data).toLowerCase();
+                var el = document.createElement("html");
+                el.innerHTML = str;
+                el = el.getElementsByTagName("img");
+                console.log(el);
+                var bool = true;
+                for (let item of el) {
+                  if (item.alt == null || item.alt == "") {
+                    document.write(
+                      "The image with the source: " +
+                        item.src +
+                        " has no alt text :(. Please go back to your code, and add alt text to make your website more accessible"
+                    );
+                    bool = false;
+                  }
+                }
+              }
+            }
+          );
+        });
+      });
+    }
+  </script>
+  <body>
+    <label>Enter URL:</label>
+    <input type="text" id="urlInput" />
+    <button onclick="checkImg()">Submit</button>
+    <br />
+    <p id="loadingParagraph"></p>
+  </body>
+</html>
